@@ -1,0 +1,25 @@
+        <!-- Search widget-->
+        <div class="card mb-4">
+          <div class="card-header"><i class="fa-solid fa-magnifying-glass"></i> Search</div>
+          <div class="card-body">
+              <div class="input-group">
+                  <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
+                  <button class="btn btn-primary" id="button-search" type="button">Go!</button>
+              </div>
+          </div>
+        </div>
+        <!-- Categories widget-->
+        <div class="card mb-4" id='category_card'>
+          <div class="card-header">Categories</div>
+          <div class="card-body">
+            <div class="row">
+
+                <ul class="list-unstyled mb-0">
+                  {% for c in categories %}
+                  <li><a href="{{c.get_absolute_url}}">{{c}} ({{c.post_set.count}})</a></li>
+                  {% endfor %}
+                  <li><a href="/blog/category/no_category">미분류 ({{no_category_post_count}})</a></li>
+                </ul>
+            </div>
+          </div>
+        </div>

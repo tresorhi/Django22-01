@@ -1,0 +1,81 @@
+{% extends 'blog/base.html' %}
+
+{% block main_area %}
+        {% if user.is_authenticated %}
+            {% if user.is_superuser or user.is_staff %}
+            <a class="btn btn-info float-right" href="/blog/create_post/" role="button">
+                <i class="fas fa-pen"> New Post</i></a>
+            {% endif %}
+        {% endif %}
+        <h2>Blog
+            {% if category %}
+            - <span class="badge badge-secondary">-{{category}}</span>
+            {% endif %}
+            {% if tag %}
+            <i class="fas fa-tag"></i>
+            - <span class="badge badge-secondary">
+                {{tag}} {{tag.post_set.count}} </span>
+            {% endif %}
+        </h2>
+        {% if post_list.exists %}
+        {% for p in post_list %}
+        <div class="card mb-4" id="post-{{p.pk}}">
+            {% if p.head_image %}
+            <img class="card-img-top" src="{{p.head_image.url}}" alt="{{p}}의 head_image" />
+            {% else %}
+            <img class="card-img-top" src="https://picsum.photos/seed/{{p.pk}}/800/200" alt="random image" />
+            {% endif %}
+            <div class="card-body">
+                {% if p.category %}
+                <span class="badge badge-secondary float-right">
+                    <a href="{{p.category.get_absolute_url}}">{{p.category}}</a>
+                </span>
+                {% else %}
+                <span class="badge badge-secondary float-right">
+                    <a href="/blog/category/no_category/">
+                        미분류
+                    </a></span>
+                {% endif %}
+                <h2 class="card-title">{{p.title | upper}}</h2>
+                {% if p.hook_text %}
+                    <h5 class="text-muted"> {{p.hook_text}} </h5>
+                {% endif %}
+                <p class="card-text">{{p.content | truncatechars:100 }}</p>
+                <!--태그 출력-->
+                {% if p.tags.exists %}
+                    <i class="fas fa-tag"></i>
+                    {% for t in p.tags.iterator %}
+                    <span class="badge badge-pill badge-light">
+                        <a href="{{t.get_absolute_url}}">
+                            {{t}}
+                        </a>
+                    </span>
+                    {% endfor %}
+                {% endif %}
+                <br></br>
+                <a class="btn btn-primary" href="{{p.get_absolute_url}}">Read more →</a>
+            </div>
+
+            <div class="card-footer">
+                <div class="small text-muted">{{p.created_at| date:"Y-m-d h:m:s"}}</div>
+                <a href="#">{{p.author | upper}}</a>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+            <h5>아직 게시물이 없습니다.</h5>
+        {% endif %}
+        <!-- Pagination-->
+        <nav aria-label="Pagination">
+          <hr class="my-0" />
+          <ul class="pagination justify-content-center my-4">
+            <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Newer</a></li>
+            <li class="page-item active" aria-current="page"><a class="page-link" href="#!">1</a></li>
+            <li class="page-item"><a class="page-link" href="#!">2</a></li>
+            <li class="page-item"><a class="page-link" href="#!">3</a></li>
+            <li class="page-item disabled"><a class="page-link" href="#!">...</a></li>
+            <li class="page-item"><a class="page-link" href="#!">15</a></li>
+            <li class="page-item"><a class="page-link" href="#!">Older</a></li>
+          </ul>
+        </nav>
+{% endblock %}
