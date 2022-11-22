@@ -4,6 +4,8 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
 from django.utils.text import slugify
+from .forms import CommentForm
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 class PostUpdate(LoginRequiredMixin, UpdateView):
@@ -101,7 +103,24 @@ class PostDetail(DetailView):
         context = super(PostDetail, self).get_context_data()
         context['categories'] = Category.objects.all()
         context['no_category_post_count'] = Post.objects.filter(category=None).count
+        context['comment_form'] = CommentForm
         return context
+
+def new_comment(request, pk):
+    if request.user.is_authenticated:
+        post = get_object_or_404(Post, pk=pk)
+        if request.method == 'POST':
+            comment_form = CommentForm(request.POST)
+            if comment_form.is_valid():
+                comment = comment_form.save(commit=False)
+                comment.post = post
+                comment.author = request.user
+                comment.save()
+                return redirect(comment.get_absolute_url()) #클라이언트에 서버가 할 일을 마지고 보내주는 정보
+        else: #Get
+            return redirect(post.get_absolute_url())
+    else: #로그인 안 한 사용자
+        raise PermissionDenied
 
 def category_page(request, slug):
         if slug == 'no_category':
@@ -116,6 +135,7 @@ def category_page(request, slug):
             'categories' : Category.objects.all(),
             'no_category_post_count' : Post.objects.filter(category=None).count
         })
+
 def tag_page(request, slug):
     tag = Tag.objects.get(slug=slug)
     post_list = tag.post_set.all()
