@@ -2,19 +2,15 @@
 {% load crispy_forms_tags %}
 
 {% block head_title %}
-    Create Post - Blog
+    Edit Comment - Blog
 {% endblock %}
 
 {% block main_area %}
-    <h1>Create a New Post</h1>
+    <h1>Edit Comment</h1>
     <hr/>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
             {{form | crispy}}
-            <div id="div_id_tags_str"> <!--원래 테이블이었음-->
-                <label for="id_tags">Tags:</label>
-                <input id="id_tags" type="text" name="tags_str" class="textinput textInput form-control">
-            </div>
         <button type="submit" class="btn btn-primary float-right">Submit</button>
     </form>
 {% endblock %}
