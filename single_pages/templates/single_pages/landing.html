@@ -1,17 +1,52 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>인터넷프로그래밍 -블로그앱</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>나의 블로그 타이틀</title>
+  <link href="{% static 'blog/bootstrap4/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" media="screen"></link>
+  <link href="{% static 'single_pages/css/landing.css' %}" rel="stylesheet" type="text/css" media="screen"></link>
+  <script src="https://kit.fontawesome.com/54c8fd0744.js" crossorigin="anonymous"></script>
 </head>
 <body>
-  <nav>
-    <a href="/blog/">Blog</a>
-    <a href="/about_me/">About Me</a>
-  </nav>
+  {% include 'blog/navbar.html' %}
+  <section>
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-lg-6 text-light" id="main-area">
+                <h1>대문 페이지 제목</h1>
+                <h2>대문 페이지 소제목</h2>
+                <h5>대문 페이지에 대한 간단한 설명</h5>
+            </div>
+            <div class="col-lg-5">
+                <h2>Recent Post</h2>
+                {% for post in recent_posts %}
+                <div class="card mt-1">
+                    <div class="card-body">
+                        <h6><a href="{{post.get_absolute_url}}" class="text-decorations-none text-dark">
+                            {{ post.title }}</a></h6>
+                        <span class="badge badge-pill badge-light float-right">
+                            <img src="{{post.get_avatar_url}}" class="mr-1 rounded-circle" width="20px">
+                            {{post.author.username}}   {{post.created_at}}
+                        </span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+  </section>
 
-  <h1>안녕하세요.. 블로그앱입니다.</h1>
-  <h2>대문페이지입니다.</h2>
-  <h3>공사중...</h3>
+
+  <div class="fixed-bottom">
+      {% include 'blog/footer.html' %}
+  </div>
+
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
 </body>
 </html>
