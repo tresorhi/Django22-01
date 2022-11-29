@@ -6,6 +6,7 @@ from django.core.exceptions import PermissionDenied
 from django.utils.text import slugify
 from .forms import CommentForm
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
 
 # Create your views here.
 class PostUpdate(LoginRequiredMixin, UpdateView):
@@ -95,6 +96,20 @@ class PostList(ListView):
     # 템플릿은 모델명_list.html : post_list.html
     # 매개변수 모델명_list : post_list
 
+class PostSearch(PostList):  # ListView 상속, 모델명_list 형태로 데이터 전달, 템플릿도 모델명_list.html
+    paginate_by = None
+
+    def get_queryset(self):
+        q = self.kwargs['q']
+        post_list = Post.objects.filter(Q(title__contains=q) | Q(tags__name__contains=q)).distinct()
+        return post_list
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(PostSearch, self).get_context_data()
+        q = self.kwargs['q']
+        context['search_info'] = f'Search: {q} ({self.get_queryset().count()})'
+        return context
+
 class PostDetail(DetailView):
     model = Post
     # 템플릿은 모델명_detail.html : post_detail.html
@@ -139,7 +154,7 @@ class CommentUpdate(LoginRequiredMixin, UpdateView):
 def category_page(request, slug):
         if slug == 'no_category':
             category = "미분류"
-            Post.objects.filter(category=None)
+            post_list = Post.objects.filter(category=None)
         else:
             category = Category.objects.get(slug=slug)
             post_list = Post.objects.filter(category=category)
