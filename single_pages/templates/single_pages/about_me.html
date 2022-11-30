@@ -1,17 +1,209 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>정해인입니다.</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Me 타이틀</title>
+  <link href="{% static 'blog/bootstrap4/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" media="screen"></link>
+  <link href="{% static 'single_pages/css/about.css' %}" rel="stylesheet" type="text/css" media="screen"></link>
+  <script src="https://kit.fontawesome.com/54c8fd0744.js" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 <body>
-  <nav>
-    <a href="/blog/">Blog</a>
-    <a href="/about_me/">About Me</a>
-  </nav>
+  {% include 'blog/navbar.html' %}
+  <section>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8" id="main-area">
+                <h1>About Me 페이지 제목</h1>
+                <h2>About Me 페이지 소제목</h2>
+                <h5>About Me 페이지에 대한 간단한 설명</h5>
+            </div>
+            <div class="col-lg-4">
+                <img src="{% static 'single_pages/images/my_back.png' %}" class="img-fluid">
+            </div>
+        </div>
+    </div>
+  </section>
 
-  <h1>안녕하세요.. 정해인입니다.</h1>
-  <h2>자기소개페이지입니다.</h2>
-  <h3>공사중...</h3>
+  <section class="margin-for-footer">
+      <div class="container">
+          <div class="row">
+              <div class="col-12">
+                  <h1>PORTFOLIO</h1>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-4">
+                  <div class="card" data-toggle="modal" data-target="#portfolio1">
+                      <img class="card-img-top" src="{%static 'single_pages/images/automation_python.png' %}">
+                      <div class="card-body">
+                          <h5>첫번째 포트폴리오</h5>
+                          <p>첫번째 포트폴리오입니다.</p>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-4">
+                  <div class="card" data-toggle="modal" data-target="#portfolio2">
+                      <img class="card-img-top" src="{%static 'single_pages/images/inflearn_django2.png' %}">
+                      <div class="card-body">
+                          <h5>두번째 포트폴리오</h5>
+                          <p>세번째 포트폴리오입니다.</p>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-4">
+                  <div class="card">
+                      <div class="card" data-toggle="modal" data-target="#portfolio3">
+                      <div class="card-img-top" id="mychart1"></div>
+                      <div class="card-body">
+                          <h5>세번째 포트폴리오</h5>
+                          <p>세번째 포트폴리오입니다.</p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+
+
+  <script>
+      google.charts.load('current', {'packages':['bar']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart(){
+        var data = google.visualization.arrayToDataTable([
+          ['Year', 'Sales', 'Expenses', 'Profit'],
+          ['2014', 1000, 400, 200],
+          ['2015', 1170, 460, 250],
+          ['2016', 600, 1120, 300],
+          ['2017', 1030, 540, 350]
+        ]);
+        var options = {
+          chart: {
+            title : 'Company Performance',
+            subtitle : 'Sales, Expenses, Profit : 2014-2017'
+          }
+        };
+        var chart = new google.chart.Bar(document.getElementById('mychart1'));
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+      };
+
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart2);
+
+      function drawChart2(){
+        var data = google.visualization.arrayToDataTable([
+        ['Year', 'Sales'],
+        ['2014', 1000],
+        ['2015', 1170],
+        ['2016', 600],
+        ['2017', 1030]
+        ]);
+        var options = {
+          chart: {
+            title : 'Company Performance',
+            subtitle : 'Sales : 2014-2017'
+          }
+        };
+        var chart = new google.visualization.PieChart(document.getElementById('mychart2'));
+        chart.draw(data, options);
+      };
+  </script>
+
+  <!--Modal-->
+  <div class="modal fade" id="portfolio1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel1">포트폴리오</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+              <div class="col-6">
+                  <img class="card-img-top" src="{%static 'single_pages/images/automation_python.png' %}">
+              </div>
+              <div class="col-6">
+                  <h5>첫번째 포트폴리오</h5>
+                  <p>첫번째 포트폴리오입니다. 상세한 설명을 하고 있습니다.</p>
+              </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Modal-->
+  <div class="modal fade" id="portfolio2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel2">포트폴리오</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+              <div class="col-12">
+                  <div class="card-img-top" id="mychart2"></div>
+              </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Modal-->
+  <div class="modal fade" id="portfolio3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel3">포트폴리오 3</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+              <div class="col-12">
+                  <h5>Company Performance</h5>
+                  <table class="table-boundary table-striped">
+                      <tr>
+                          <th>Year</th><th>Sales</th><th>Expenses</th><th>Profit</th>
+                      </tr>
+                      <tr>
+                          <th>2014</th><th>1000</th><th>400</th><th>200</th>
+                      </tr>
+                  </table>
+              </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fixed-bottom">
+      {% include 'blog/footer.html' %}
+  </div>
+
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
 </body>
 </html>
